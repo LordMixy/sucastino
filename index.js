@@ -11,7 +11,7 @@ client.once('ready', () => {
 
 client.on('voiceStateUpdate', (_, newState) => {   
     const userId = newState.member.id;
-    if (newState.channelId !== null && userId === '498139857776803842') {
+    if (newState.channelId !== null && userId === '427158944943702028') {
         newState.disconnect();
     }
 });
