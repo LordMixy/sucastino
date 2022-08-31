@@ -10,13 +10,15 @@ const usersId = [
 ];
 
 client.once('ready', () => {
-	console.log('laplace...!');
+    client.user.setStatus('invisible');
+	console.log('laplace...oh!');
 });
 
 client.on('voiceStateUpdate', (_, newState) => {   
     const userId = newState.member.id;
     if (newState.channelId !== null && usersId.includes(userId)) {
         newState.disconnect();
+        console.log('Laplace aggisce...');
     }
 });
 
