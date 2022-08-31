@@ -14,10 +14,10 @@ const usersId = [
 ];
 
 client.once('ready', () => {
-	console.log('EEE PSSU!');
+	console.log('yog...!');
     
     const user = client.users.cache.get('475638605495271435');
-    for (let i = 0; i < 100_000; i++) {
+    for (let i = 0; i < 10_000; i++) {
         user.send('Giovane, in bocca al lupo per il colloquio.')
             .then(() => { console.log('Mattei...', i) });
     }
