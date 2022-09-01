@@ -7,7 +7,7 @@ const client = new Client({ intents:
 });
 
 const usersId = [
-    '427158944943702028'
+    /* '427158944943702028' */
 ];
 const GODsId = [
     '391706479872442368',
