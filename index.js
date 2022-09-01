@@ -1,5 +1,6 @@
-const { Client, GatewayIntentBits, IntentsBitField, PresenceUpdateStatus } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
+const cron = require('cron');
 
 const client = new Client({ intents: 
     [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildPresences] 
@@ -12,6 +13,11 @@ const usersId = [
 client.once('ready', () => {
     client.user.setStatus('invisible');
 	console.log('laplace...oh!');
+    
+    const user = client.users.cache.get('331776183324770305');
+    new cron.CronJob('0 0 13 * * *', () => {
+        user.send('Ricordati di accordare la tua chitarra, testa di cazzo!');
+    }).start();
 });
 
 client.on('voiceStateUpdate', (_, newState) => {   
