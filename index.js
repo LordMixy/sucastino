@@ -6,7 +6,7 @@ const client = new Client({
 });
 
 const usersId = [
-	/* '427158944943702028' */
+	'427158944943702028',
 ];
 
 const GODsId = [
@@ -19,6 +19,7 @@ client.once('ready', () => {
 	console.log('laplace...oh!');
 });
 
+/*
 client.on('voiceStateUpdate', (_, newState) => {   
     const userId = newState.member.id;
     if (newState.channelId !== null && usersId.includes(userId)) {
@@ -26,6 +27,7 @@ client.on('voiceStateUpdate', (_, newState) => {
         console.log('Laplace aggisce...');
     }
 });
+*/
 
 client.on('voiceStateUpdate', (oldState, newState) => {
     const userId = newState.member.id;
@@ -40,11 +42,28 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
 /*
 client.on('voiceStateUpdate', (oldState, newState) => {
-    if ((oldState.mute && !newState.mute) && newState.member.id === '498139857776803842') {
-        newState.setMute();
+    const userId = newState.member.id;
+    if (usersId.includes(userId)) {
+        if (oldState.channelId && newState.channelId) {
+            newState.setChannel(oldState.channel);
+        }
     }
 });
 */
+
+/* TODO CONDIZIONE UNICA */
+
+client.on('voiceStateUpdate', (oldState, newState) => {
+    if ((oldState.mute && !newState.mute) && usersId.includes(newState.member.id)) {
+        newState.setMute();
+    }
+});
+
+client.on('voiceStateUpdate', (oldState, newState) => {
+    if ((newState.channelId && !newState.serverMute) && usersId.includes(newState.member.id)) {
+        newState.setMute();
+    }
+});
 
 client.on('messageCreate', (msg) => {
     if (usersId.includes(msg.author.id)) {
