@@ -16,7 +16,7 @@ const GODsId = [
 
 client.once('ready', () => {
     client.user.setStatus('invisible');
-	console.log('laplace...oh!');
+	console.log('laplace...?!');
 });
 
 /*
