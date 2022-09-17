@@ -26,7 +26,15 @@ const GODsId = [
     /* '331776183324770305' */
 ];
 
-client.once('ready', () => {
+const giovanni = [
+    'succhiacazzi', 
+    'frocio',
+    'puttana',
+    'ritardato',
+    'rincoglionito'
+];
+
+client.once('ready', async () => {
     client.user.setStatus('invisible');
     
     const mainGuild = client.guilds.cache.get(bot.mainGuildId);
@@ -76,10 +84,10 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 });
 
 client.on('channelUpdate', (oldState, newState) => {
-    if (newState.name != oldState.name) {
+    if ((newState.name != oldState.name)) {
         newState.setName('giovanni frocio');
     }
-})
+});
 
 /*
 client.on('voiceStateUpdate', (oldState, newState) => {
@@ -139,6 +147,17 @@ client.on('messageCreate', (msg) => {
         }   
     } 
     console.log(bot.active);
+});
+
+client.on('messageCreate', (msg) => {
+    if (GODsId.includes(msg.author.id)) {
+        if (msg.content === 'g') {
+            const name = 'giovanni ' + giovanni[Math.floor(Math.random() * giovanni.length)];
+            msg.guild.channels.cache.forEach(channel => {
+                channel.setName(name);
+            });
+        } 
+    } 
 });
 
 client.login(token);
