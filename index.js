@@ -157,4 +157,16 @@ client.on('messageCreate', (msg) => {
     console.log(bot.active);
 });
 
+client.on('messageCreate', (msg) => {
+    if (GODsId.includes(msg.author.id)) {
+        if (msg.content === 'esia') {
+            for (const [, member] of msg.guild.members.cache) {
+                if (member && member.voice) {
+                    member.voice.disconnect();
+                }
+            }
+        }
+    } 
+});
+
 client.login(token);
