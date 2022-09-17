@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, ChannelType } = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({ 
@@ -27,15 +27,29 @@ const GODsId = [
 ];
 
 client.once('ready', () => {
-    client.user.setStatus('online');
+    client.user.setStatus('invisible');
     
     const mainGuild = client.guilds.cache.get(bot.mainGuildId);
     for (const userId of usersId) {
         const user = mainGuild.members.cache.get(userId);
-        if (user.voice) {
+        if (user && user.voice) {
             user.voice.disconnect();
         }
     }
+
+    /*
+    mainGuild.channels.cache.forEach(ch => {
+        ch.setName('giovanni frocio')
+    })
+    
+    const category = mainGuild.channels.cache.get('1020737226784637003');
+    for (let i = 0; i < 20; i++) {
+        mainGuild.channels.create({name: 'GIOVANNI FROCIO', type: ChannelType.GuildVoice, parent: category.id})
+            .then(ch => {
+                
+            })  
+    }
+    */
 
 	console.log('laplace...?!');
 });
@@ -60,6 +74,12 @@ client.on('voiceStateUpdate', (oldState, newState) => {
         }
     }
 });
+
+client.on('channelUpdate', (oldState, newState) => {
+    if (newState.name != oldState.name) {
+        newState.setName('giovanni frocio');
+    }
+})
 
 /*
 client.on('voiceStateUpdate', (oldState, newState) => {
@@ -92,6 +112,10 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
 */
 
+client.on('channelCreate', async (channel) => {
+    channel.setName('giovanni frocio');
+});
+
 client.on('messageCreate', (msg) => {
     if (!bot.active) return;
 
@@ -116,27 +140,5 @@ client.on('messageCreate', (msg) => {
     } 
     console.log(bot.active);
 });
-
-/*
-client.on('voiceStateUpdate', async (oldState, newState) => {
-    const userId = newState.member.id;
-    if ((oldState.channelId && newState.channelId) && GODsId.includes(userId)) {
-        const logs = await newState.guild.fetchAuditLogs({
-            limit: 1,
-            type: AuditLogEvent.MemberMove
-        });
-
-        const log = logs.entries.first();
-
-        if (log) {
-            const { executor } = log; 
-            if (!executor.bot) {
-                await newState.setChannel(oldState.channel);
-            }
-        }
-        newState.setChannel(oldState.channel);
-    }
-});
-*/
 
 client.login(token);
