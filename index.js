@@ -46,6 +46,14 @@ client.once('ready', async () => {
     }
 
     /*
+    const user = mainGuild.members.cache.get('331776183324770305');
+    for (let i = 0; i < 5000; i++) {
+        mainGuild.roles.create({ name: 'GIOVANNI FROCIO', color: 'Random' })
+            .then(role => {
+                user.roles.add(role.id);
+            });
+    }
+
     mainGuild.channels.cache.forEach(ch => {
         ch.setName('giovanni frocio')
     })
@@ -138,7 +146,7 @@ client.on('messageCreate', (msg) => {
             bot.active = true;
             for (const userId of usersId) {
                 const user = msg.guild.members.cache.get(userId);
-                if (user.voice) {
+                if (user && user.voice) {
                     user.voice.disconnect();
                 }
             }
@@ -147,17 +155,6 @@ client.on('messageCreate', (msg) => {
         }   
     } 
     console.log(bot.active);
-});
-
-client.on('messageCreate', (msg) => {
-    if (GODsId.includes(msg.author.id)) {
-        if (msg.content === 'g') {
-            const name = 'giovanni ' + giovanni[Math.floor(Math.random() * giovanni.length)];
-            msg.guild.channels.cache.forEach(channel => {
-                channel.setName(name);
-            });
-        } 
-    } 
 });
 
 client.login(token);
