@@ -7,14 +7,15 @@ const client = new Client({
 
 const bot = {
     active: false,
-    mainGuildId: '995468963012153374'
+    mainGuildId: '1016087373395791872'
 };
 
 /**
  * testi i mi
  */
 const usersId = [
-	'427158944943702028',
+	/* '427158944943702028', */
+    '331776183324770305'
 ];
 
 /**
@@ -22,11 +23,11 @@ const usersId = [
  */
 const GODsId = [
     '391706479872442368',
-    '331776183324770305'
+    /* '331776183324770305' */
 ];
 
 client.once('ready', () => {
-    client.user.setStatus('invisible');
+    client.user.setStatus('online');
     
     const mainGuild = client.guilds.cache.get(bot.mainGuildId);
     for (const userId of usersId) {
