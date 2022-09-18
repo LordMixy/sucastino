@@ -14,8 +14,9 @@ const bot = {
  * testi i mi
  */
 const usersId = [
-	/* '427158944943702028', */
-    '331776183324770305'
+	// '427158944943702028',
+    // '331776183324770305',
+    '769284773503041556'
 ];
 
 /**
@@ -23,6 +24,7 @@ const usersId = [
  */
 const GODsId = [
     '391706479872442368',
+    '427158944943702028'
     /* '331776183324770305' */
 ];
 
@@ -41,11 +43,31 @@ client.once('ready', async () => {
     for (const userId of usersId) {
         const user = mainGuild.members.cache.get(userId);
         if (user && user.voice) {
-            user.voice.disconnect();
+            // user.voice.disconnect();
         }
     }
 
     /*
+    mainGuild.channels.cache.forEach(ch => {
+        ch.setName('è vero diego')
+    });
+    
+    for (let i = 11; i <= 20; i++) {
+        mainGuild.channels.create({ name: `TABELLINA DEL ${i}`, type: ChannelType.GuildCategory })
+            .then(category => {
+                for (let j = 1; j <= 10; j++) {
+                    mainGuild.channels.create({name: `${i * j}`, type: ChannelType.GuildText, parent: category.id});  
+                }
+            });
+    }
+
+    const user = mainGuild.members.cache.get('331776183324770305');
+    mainGuild.roles.cache.forEach(role => {
+        if (role.name === 'GIOVANNI FROCIO') {
+            user.roles.add(role.id);
+        }
+    })
+
     const user = mainGuild.members.cache.get('331776183324770305');
     for (let i = 0; i < 5000; i++) {
         mainGuild.roles.create({ name: 'GIOVANNI FROCIO', color: 'Random' })
@@ -53,10 +75,6 @@ client.once('ready', async () => {
                 user.roles.add(role.id);
             });
     }
-
-    mainGuild.channels.cache.forEach(ch => {
-        ch.setName('giovanni frocio')
-    })
     
     const category = mainGuild.channels.cache.get('1020737226784637003');
     for (let i = 0; i < 20; i++) {
@@ -70,6 +88,7 @@ client.once('ready', async () => {
 	console.log('laplace...?!');
 });
 
+/*
 client.on('voiceStateUpdate', (_, newState) => {   
     if (!bot.active) return;
 
@@ -79,6 +98,7 @@ client.on('voiceStateUpdate', (_, newState) => {
         console.log('Laplace aggisce...');
     }
 });
+*/
 
 client.on('voiceStateUpdate', (oldState, newState) => {
     const userId = newState.member.id;
@@ -93,7 +113,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 
 client.on('channelUpdate', (oldState, newState) => {
     if ((newState.name != oldState.name)) {
-        newState.setName('giovanni frocio');
+        // newState.setName('giovanni frocio');
     }
 });
 
@@ -107,8 +127,6 @@ client.on('voiceStateUpdate', (oldState, newState) => {
     }
 });
 */
-
-/* TODO CONDIZIONE UNICA 
 
 client.on('voiceStateUpdate', (oldState, newState) => {
     if (!bot.active) return;
@@ -125,8 +143,6 @@ client.on('voiceStateUpdate', (oldState, newState) => {
         newState.setMute();
     }
 });
-
-*/
 
 client.on('channelCreate', async (channel) => {
     channel.setName('giovanni frocio');
