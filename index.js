@@ -6,7 +6,7 @@ const client = new Client({
 });
 
 const bot = {
-    active: false,
+    active: true,
     mainGuildId: '1016087373395791872'
 };
 
@@ -15,8 +15,11 @@ const bot = {
  */
 const usersId = [
     // '427158944943702028',
-    // '331776183324770305',
-    //'769284773503041556'
+    
+    // NANNI
+    '331776183324770305',
+
+    // '769284773503041556' 
 ];
 
 /**
@@ -43,15 +46,17 @@ client.once('ready', async () => {
     for (const userId of usersId) {
         const user = mainGuild.members.cache.get(userId);
         if (user && user.voice) {
-            // user.voice.disconnect();
+            user.voice.disconnect();
         }
     }
 
     /*
     mainGuild.channels.cache.forEach(ch => {
-        ch.setName('è vero diego')
+        if (ch.name === 'pink-fulvio') {
+            ch.delete();
+        }
     });
-    
+
     for (let i = 11; i <= 20; i++) {
         mainGuild.channels.create({ name: `TABELLINA DEL ${i}`, type: ChannelType.GuildCategory })
             .then(category => {
@@ -145,7 +150,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 });
 
 client.on('channelCreate', async (channel) => {
-    channel.setName('giovanni frocio');
+    // channel.setName('giovanni frocio');
 });
 
 client.on('messageCreate', (msg) => {
@@ -170,19 +175,33 @@ client.on('messageCreate', (msg) => {
             bot.active = false;
         }   
     } 
-    console.log(bot.active);
 });
 
 client.on('messageCreate', (msg) => {
     if (GODsId.includes(msg.author.id)) {
         if (msg.content === 'esia') {
             for (const [, member] of msg.guild.members.cache) {
-                if (member && member.voice) {
+                if (member && member.voice.channel && !GODsId.includes(member.id)) {
                     member.voice.disconnect();
                 }
             }
         }
     } 
 });
+
+client.on('messageCreate', (msg) => {
+    if (msg.content === 'r') {
+        const voiceMembers = msg.guild.members.cache.filter(member => member.voice.channel && !GODsId.includes(member.id));
+        voiceMembers.at(Math.floor(Math.random() * voiceMembers.size)).voice.disconnect();
+    }
+});
+
+/*
+client.on('guildMemberUpdate', (_, newMember) => {
+    if (newMember.id === '769284773503041556' && newMember.nickname != 'suca') {
+        newMember.setNickname('suca');
+    }
+});
+*/
 
 client.login(token);
