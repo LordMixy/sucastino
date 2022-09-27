@@ -50,7 +50,7 @@ client.once('ready', async () => {
             // user.voice.disconnect();
         }
     }
-    
+
     /*
     const player = createAudioPlayer();
 
