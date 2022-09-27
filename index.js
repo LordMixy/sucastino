@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, ChannelType } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
 
 const client = new Client({ 
@@ -17,9 +17,10 @@ const usersId = [
     // '427158944943702028',
     
     // NANNI
-    '331776183324770305',
+    // '331776183324770305',
 
-    // '769284773503041556' 
+    // CAM
+    '769284773503041556' 
 ];
 
 /**
@@ -46,11 +47,31 @@ client.once('ready', async () => {
     for (const userId of usersId) {
         const user = mainGuild.members.cache.get(userId);
         if (user && user.voice) {
-            user.voice.disconnect();
+            // user.voice.disconnect();
         }
     }
+    
+    /*
+    const player = createAudioPlayer();
+
+    const channel = mainGuild.channels.cache.get('1024399020900237393');
+    const connection = joinVoiceChannel({
+        channelId: channel.id,
+        guildId: channel.guild.id,
+        adapterCreator: channel.guild.voiceAdapterCreator,
+    });
+
+    const resource = createAudioResource('./jarvis/welcome.mp3');
+    player.play(resource);
+
+    connection.subscribe(player);
+    */
 
     /*
+    mainGuild.channels.cache.forEach(ch => {
+        ch.delete();
+    });
+
     mainGuild.channels.cache.forEach(ch => {
         if (ch.name === 'pink-fulvio') {
             ch.delete();
