@@ -6,7 +6,7 @@ const client = new Client({
 });
 
 const bot = {
-    active: true,
+    active: false,
     mainGuildId: '1016087373395791872'
 };
 
