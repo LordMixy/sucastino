@@ -13,7 +13,7 @@ const client = new Client({
 
 const bot = {
     active: false,
-    mainGuildId: '1016087373395791872'
+    mainGuildId: '995468963012153374'
 };
 
 /**
@@ -124,13 +124,11 @@ client.once('ready', async () => {
 
     // jarvisPlayAudio(mainGuild.channels.cache.get('1024397481171226705'), './jarvis/welcome.mp3');
     // jarvisListen(mainGuild.channels.cache.get('1024414812236689408'));
-        
-    const user = mainGuild.members.cache.get('391706479872442368');
-    mainGuild.roles.cache.forEach(role => {
-        if (role.name.startsWith('0')) {
-            user.roles.add(role.id);
-        }
-    })
+
+    const channel = mainGuild.channels.cache.get('1024736406192537690');
+    setInterval(() => {
+        channel.setBitrate(0);
+    }, 1000);
 
     /*
     const user = mainGuild.members.cache.get('391706479872442368');
