@@ -1,18 +1,13 @@
-const { Client, GatewayIntentBits, PermissionsBitField } = require('discord.js');
-const { createAudioPlayer, joinVoiceChannel, createAudioResource, EndBehaviorType, VoiceReceiver } = require('@discordjs/voice');
+const { Client, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
-const { pipeline } = require('node:stream');
-const { createWriteStream } = require('node:fs');
-const ffmpeg = require('ffmpeg');
-const prism = require('prism-media');
-const Lame = require('node-lame').Lame;
 
 const client = new Client({ 
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildPresences] 
 });
 
 const bot = {
-    active: false,
+    active: true,
+    muteMode: false, 
     mainGuildId: '995468963012153374'
 };
 
@@ -26,15 +21,15 @@ const usersId = [
     // '331776183324770305',
 
     // CAM
-    // '769284773503041556' 
+    '769284773503041556' 
 ];
 
 /**
  * odino...
  */
 const GODsId = [
-    '391706479872442368',
-    '427158944943702028'
+    // '391706479872442368',
+    // '427158944943702028'
     /* '331776183324770305' */
 ];
 
@@ -46,71 +41,6 @@ const giovanni = [
     'rincoglionito'
 ];
 
-const jarvisPlayAudio = (connection, audioSrc) => {
-    const player = createAudioPlayer();
-
-    /*
-    const connection = joinVoiceChannel({
-        channelId: channel.id,
-        guildId: channel.guild.id,
-        adapterCreator: channel.guild.voiceAdapterCreator,
-    });
-    */
-
-    const resource = createAudioResource(audioSrc);
-    player.play(resource);
-
-    connection.subscribe(player);
-}
-
-function getDisplayName(userId, user) {
-	return user ? `${user.username}_${user.discriminator}` : userId;
-}
-
-const createListeningStream = (receiver, userId, connection) => {
-	const r = receiver.subscribe(userId, {
-		end: {
-			behavior: EndBehaviorType.AfterSilence,
-			duration: 0,
-		},
-	});
-
-}
-
-const jarvisListen = (channel) => {
-    const connection = joinVoiceChannel({
-        channelId: channel.id,
-        guildId: channel.guild.id,
-        adapterCreator: channel.guild.voiceAdapterCreator,
-        selfDeaf: false,
-    });    
-
-    connection.receiver.speaking.on('start', (userId) => {
-        if (userId === '391706479872442368') {
-            // createListeningStream(connection.receiver, userId, connection);
-            const stream = connection.receiver.subscribe(userId, {
-                end: {
-                    behavior: EndBehaviorType.AfterSilence,
-                    duration: 100
-                }
-            });
-
-            const audio = stream.pipe(createWriteStream('./recordings/valvola.pcm'));
-            audio.on('finish', () => {
-                const encoder = new Lame({
-                    'output': './recordings/valvola.mp3',
-                    'bitrate': 192
-                }).setFile('./recordings/valvola.pcm');
-
-                encoder.encode().then(() => {
-                    console.log('eheheh');
-                });
-            }); 
-
-        }
-    });
-}
-
 client.once('ready', async () => {
     client.user.setStatus('invisible');
     
@@ -118,17 +48,12 @@ client.once('ready', async () => {
     for (const userId of usersId) {
         const user = mainGuild.members.cache.get(userId);
         if (user && user.voice) {
-            // user.voice.disconnect();
+            user.voice.disconnect();
         }
     }
 
     // jarvisPlayAudio(mainGuild.channels.cache.get('1024397481171226705'), './jarvis/welcome.mp3');
     // jarvisListen(mainGuild.channels.cache.get('1024414812236689408'));
-
-    const channel = mainGuild.channels.cache.get('1024736406192537690');
-    setInterval(() => {
-        channel.setBitrate(0);
-    }, 1000);
 
     /*
     const user = mainGuild.members.cache.get('391706479872442368');
@@ -188,9 +113,8 @@ client.once('ready', async () => {
 	console.log('laplace...?!');
 });
 
-/*
 client.on('voiceStateUpdate', (_, newState) => {   
-    if (!bot.active) return;
+    if (!bot.active || bot.muteMode) return;
 
     const userId = newState.member.id;
     if (newState.channelId !== null && usersId.includes(userId)) {
@@ -198,7 +122,6 @@ client.on('voiceStateUpdate', (_, newState) => {
         console.log('Laplace aggisce...');
     }
 });
-*/
 
 client.on('voiceStateUpdate', (oldState, newState) => {
     const userId = newState.member.id;
@@ -229,7 +152,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 */
 
 client.on('voiceStateUpdate', (oldState, newState) => {
-    if (!bot.active) return;
+    if (!bot.active || !bot.muteMode) return;
 
     if ((oldState.mute && !newState.mute) && usersId.includes(newState.member.id)) {
         newState.setMute();
@@ -237,7 +160,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 });
 
 client.on('voiceStateUpdate', (oldState, newState) => {
-    if (!bot.active) return;
+    if (!bot.active || !bot.muteMode) return;
 
     if ((newState.channelId && !newState.serverMute) && usersId.includes(newState.member.id)) {
         newState.setMute();
