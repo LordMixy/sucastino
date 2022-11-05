@@ -15,13 +15,17 @@ const bot = {
  * testi i mi
  */
 const usersId = [
+    // STINO
     // '427158944943702028',
     
     // NANNI
     // '331776183324770305',
 
     // CAM
-    '769284773503041556' 
+    // '769284773503041556' 
+
+    // MONE
+    // '498139857776803842'
 ];
 
 /**
@@ -51,6 +55,10 @@ client.once('ready', async () => {
             user.voice.disconnect();
         }
     }
+
+    mainGuild.channels.cache.forEach(channel => {
+        channel.setName('狂気の定義？');
+    });
 
     // jarvisPlayAudio(mainGuild.channels.cache.get('1024397481171226705'), './jarvis/welcome.mp3');
     // jarvisListen(mainGuild.channels.cache.get('1024414812236689408'));
