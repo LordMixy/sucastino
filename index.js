@@ -133,7 +133,7 @@ client.once('ready', async () => {
 });
 
 //laplace disconnette
-client.on('voiceStateUpdate', (_, newState) => {
+/*client.on('voiceStateUpdate', (_, newState) => {
     if (!bot.active || bot.muteMode) return;
 
     const userId = newState.member.id;
@@ -142,6 +142,7 @@ client.on('voiceStateUpdate', (_, newState) => {
         console.log('Laplace aggisce...');
     }
 });
+*/
 
 //antimute per i gods
 client.on('voiceStateUpdate', (oldState, newState) => {
@@ -156,7 +157,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 });
 
 //cambia i canali in giovanni frocio per nuovo evento
-client.on('channelUpdate', (oldState, newState) => {
+/*client.on('channelUpdate', (oldState, newState) => {
     if ((newState.name != oldState.name)) {
         // newState.setName('giovanni frocio');
     }
@@ -175,14 +176,15 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 */
 
 //muta se il bot è attivo e la mutemode è attiva
-client.on('voiceStateUpdate', (oldState, newState) => {
+/*client.on('voiceStateUpdate', (oldState, newState) => {
     if (!bot.active || !bot.muteMode) return;
 
     if ((oldState.mute && !newState.mute) && usersId.includes(newState.member.id)) {
         newState.setMute();
     }
-});
+});*/
 
+/*
 //muta quando entra nel canale e non è mutato
 client.on('voiceStateUpdate', (oldState, newState) => {
     if (!bot.active || !bot.muteMode) return;
@@ -191,6 +193,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
         newState.setMute();
     }
 });
+
 
 //crea canale giovanni frocio
 client.on('channelCreate', async (channel) => {
@@ -205,6 +208,7 @@ client.on('messageCreate', (msg) => {
         msg.delete();
     }
 });
+
 
 client.on('messageCreate', (msg) => {
     if (GODsId.includes(msg.author.id)) {
