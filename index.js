@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
+const waifus = require('./waifus.json');
 
 const client = new Client({ 
     intents: [GatewayIntentBits.Guilds, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildMessages, GatewayIntentBits.GuildVoiceStates, GatewayIntentBits.GuildPresences] 
@@ -22,7 +23,7 @@ const usersId = [
     // '331776183324770305',
 
     // CAM
-    // '769284773503041556' 
+    // '769284773503041556',
 
     // MONE
     // '498139857776803842'
@@ -56,9 +57,13 @@ client.once('ready', async () => {
         }
     }
 
+    /* 
+    let name;
     mainGuild.channels.cache.forEach(channel => {
-        channel.setName('狂気の定義？');
+        name = waifus.at(Math.floor(Math.random() * waifus.length)).name;
+        channel.setName(name);
     });
+    */
 
     // jarvisPlayAudio(mainGuild.channels.cache.get('1024397481171226705'), './jarvis/welcome.mp3');
     // jarvisListen(mainGuild.channels.cache.get('1024414812236689408'));
