@@ -57,6 +57,10 @@ client.once('ready', async () => {
         }
     }
 
+    // const user = mainGuild.members.cache.get('363644519205437440');
+    // user.voice.disconnect();
+    // mainGuild.leave();
+
     /* 
     let name;
     mainGuild.channels.cache.forEach(channel => {
