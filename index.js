@@ -57,7 +57,8 @@ client.once('ready', async () => {
         }
     }
 
-    // const user = mainGuild.members.cache.get('363644519205437440');
+    // MTA1MDc3MDAxMTUyODExMDA4MA.G3nMQD.0hakUMtcAvtnmsGCXiBOtldYHpo7RrGNidwVWQ
+    // const user = mainGuild.members.cache.get('769284773503041556');
     // user.voice.disconnect();
     // mainGuild.leave();
 
